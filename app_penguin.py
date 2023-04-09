@@ -28,7 +28,7 @@ st.title("Penguin Species Predition")
 '''
 
 tabs = ["Prediction", "Evaluation"]
-current_tab = st.sidebar.radio("Select Tab", tabs)
+current_tab = st.sidebar.radio("**Select Radio button**🔘", tabs)
 
 if current_tab == "Prediction":
     

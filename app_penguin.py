@@ -20,7 +20,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Penguin Species Prediction")
+st.title("🐧 Penguin Species Prediction 🐧")
 
 '''
 ## Penguin .... ^.^ 

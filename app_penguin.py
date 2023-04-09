@@ -20,18 +20,19 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Penguin Species Predition")
+st.title("Penguin Species Prediction")
 
 '''
 ## Penguin .... ^.^ 
 เพกวินเป็นนก ... แต่บินไม่ได้
 '''
 
-tabs = ["Prediction", "Evaluation"]
-current_tab = st.sidebar.radio("**Select Radio button**🔘", tabs)
+# Create two columns in the layout
+c1, c2 = st.beta_columns(2)
 
-if current_tab == "Prediction":
-    
+# Add Prediction menu to column c1
+with c1:
+    st.subheader("Prediction")
     x1 = st.radio("เลือก island ",island_encoder.classes_)
     x1 = island_encoder.transform([x1])[0]
     x2 = st.slider("เลือก culmen length (mm)", 20,70,35 )
@@ -57,8 +58,9 @@ if current_tab == "Prediction":
     st.markdown('### Predicted Species: ' )
     st.markdown(html_str, unsafe_allow_html=True)
 
-if current_tab == "Evaluation":
-   
+# Add Evaluation menu to column c2
+with c2:
+    st.subheader("Evaluation")
     x = evaluations.columns
     fig = px.Figure(data=[
         px.Bar(name = 'Decision Tree',
@@ -80,6 +82,6 @@ if current_tab == "Evaluation":
     st.plotly_chart(fig, use_container_width=True)
 
     st.dataframe(evaluations)
-    
+   
 st.sidebar.info("**💾 More informations:**")
 st.sidebar.caption("[🔗Github](https://github.com/lightangel9/Penguin-Predictions)")

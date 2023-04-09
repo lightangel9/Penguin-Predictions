@@ -82,4 +82,4 @@ if current_tab == "Evaluation":
     st.dataframe(evaluations)
     
 st.sidebar.info("**💾 More informations:**")
-st.sidebar.caption("[🔗Github](https://github.com/lightangel9/Streamlit-Dog)")
+st.sidebar.caption("[🔗Github](https://github.com/lightangel9/Penguin-Predictions)")

@@ -27,61 +27,73 @@ st.title("Penguin Species Prediction")
 เพกวินเป็นนก ... แต่บินไม่ได้
 '''
 
-# Create two columns in the layout
-c1, c2 = st.beta_columns(2)
+tabs = ["Prediction", "Evaluation"]
+current_tab = st.sidebar.radio("**Select Radio button**🔘", tabs)
 
-# Add Prediction menu to column c1
-with c1:
-    st.subheader("Prediction")
-    x1 = st.radio("เลือก island ",island_encoder.classes_)
-    x1 = island_encoder.transform([x1])[0]
-    x2 = st.slider("เลือก culmen length (mm)", 20,70,35 )
-    x3 = st.slider("เลือก culmen depth (mm)", 10,30,15 )
-    x4 = st.slider("เลือก flipper length (mm)", 150,250,200)
-    x5 = st.slider("เลือก body mass (g)", 2500,6500,3000)
-    x6 = st.radio("เลือก sex ",sex_encoder.classes_)
-    x6 = sex_encoder.transform([x6])[0]
-    x_new = pd.DataFrame(data=np.array([x1, x2, x3, x4, x5, x6]).reshape(1,-1), 
-                 columns=['island', 'culmen_length_mm', 'culmen_depth_mm','flipper_length_mm', 'body_mass_g', 'sex'])
+if current_tab == "Prediction":
+    
+    col1, col2 = st.columns(2)  # Create two columns
 
-    pred = model.predict(x_new)
+    with col1:
+        x1 = st.radio("เลือก island ",island_encoder.classes_)
+        x1 = island_encoder.transform([x1])[0]
+        x2 = st.slider("เลือก culmen length (mm)", 20,70,35 )
+        x3 = st.slider("เลือก culmen depth (mm)", 10,30,15 )
+        x4 = st.slider("เลือก flipper length (mm)", 150,250,200)
+        x5 = st.slider("เลือก body mass (g)", 2500,6500,3000)
+        x6 = st.radio("เลือก sex ",sex_encoder.classes_)
+        x6 = sex_encoder.transform([x6])[0]
+        x_new = pd.DataFrame(data=np.array([x1, x2, x3, x4, x5, x6]).reshape(1,-1), 
+                     columns=['island', 'culmen_length_mm', 'culmen_depth_mm','flipper_length_mm', 'body_mass_g', 'sex'])
 
-    html_str = f"""
-    <style>
-    p.a {{
-      font: bold {30}px Courier;
-    }}
-    </style>
-    <p class="a">{species_encoder.inverse_transform(pred)[0]}</p>
-    """
+        pred = model.predict(x_new)
 
-    st.markdown('### Predicted Species: ' )
-    st.markdown(html_str, unsafe_allow_html=True)
+        html_str = f"""
+        <style>
+        p.a {{
+          font: bold {30}px Courier;
+        }}
+        </style>
+        <p class="a">{species_encoder.inverse_transform(pred)[0]}</p>
+        """
 
-# Add Evaluation menu to column c2
-with c2:
-    st.subheader("Evaluation")
-    x = evaluations.columns
-    fig = px.Figure(data=[
-        px.Bar(name = 'Decision Tree',
-               x = x,
-               y = evaluations.loc['Decision Tress']),
-        px.Bar(name = 'Random Forest',
-               x = x,
-               y =  evaluations.loc['Random Forest']),
-        px.Bar(name = 'KNN',
-               x = x,
-               y =  evaluations.loc['KNN']),
-        px.Bar(name = 'AdaBoost',
-               x = x,
-               y =  evaluations.loc['AdaBoost']),
-        px.Bar(name = 'XGBoost',
-               x = x,
-               y =  evaluations.loc['XGBoost'])
-    ])
-    st.plotly_chart(fig, use_container_width=True)
+        st.markdown('### Predicted Species: ' )
+        st.markdown(html_str, unsafe_allow_html=True)
 
-    st.dataframe(evaluations)
-   
+if current_tab == "Evaluation":
+
+    col1, col2 = st.columns(2)  # Create two columns
+    
+    with col1:
+        x = evaluations.columns
+        fig = px.Figure(data=[
+            px.Bar(name = 'Decision Tree',
+                   x = x,
+                   y = evaluations.loc['Decision Tress']),
+            px.Bar(name = 'Random Forest',
+                   x = x,
+                   y =  evaluations.loc['Random Forest']),
+            px.Bar(name = 'KNN',
+                   x = x,
+                   y =  evaluations.loc['KNN']),
+            px.Bar(name = 'AdaBoost',
+                   x = x,
+                   y =  evaluations.loc['AdaBoost']),
+            px.Bar(name = 'XGBoost',
+                   x = x,
+                   y =  evaluations.loc['XGBoost'])
+        ])
+        st.plotly_chart(fig, use_container_width=True)
+
+    with col2:
+        x = evaluations.index
+        y = evaluations.values.flatten()
+        fig2 = px.Bar(x=x,y=y,
+labels={'x':'Model', 'y':'Accuracy'},
+title='Model Evaluation',
+color_discrete_sequence=['#8BC34A']*5)
+fig2.update_yaxes(range=[0,1])
+st.plotly_chart(fig2, use_container_width=True)
+
 st.sidebar.info("**💾 More informations:**")
 st.sidebar.caption("[🔗Github](https://github.com/lightangel9/Penguin-Predictions)")

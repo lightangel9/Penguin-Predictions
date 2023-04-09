@@ -21,30 +21,17 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Penguin Species Predition")
+st.title("Penguin Species Prediction")
 
 '''
 ## Penguin .... ^.^ 
-
 เพกวินเป็นนก ... แต่บินไม่ได้
-
 '''
-    
-with st.sidebar:
-        menuItem = option_menu("Penguin",
-                               ["Prediction", "Evaluation"],
-                               icons=["magic", "file-bar-graph-fill"],
-                               menu_icon='house',
-                               default_index=0,
-                               styles={
-                                   "container": {"padding": "5!important", "background-color": "#fafafa"},
-                                   "icon": {"color": "black", "font-size": "25px"},
-                                   "nav-link": {"font-size": "16px", "text-align": "left", "margin": "0px",
-                                                "--hover-color": "#eee"},
-                                   "nav-link-selected": {"background-color": "#037ffc"},
-                               })
 
-        
+# Use tabs for menu selection
+tabs = ["Prediction", "Evaluation"]
+menuItem = st.sidebar.selectbox("Select Menu", tabs, index=0)
+
 if menuItem == "Prediction":
     
     x1 = st.radio("เลือก island ",island_encoder.classes_)
@@ -95,4 +82,3 @@ if menuItem == "Evaluation":
     st.plotly_chart(fig, use_container_width=True)
 
     st.dataframe(evaluations)
-    

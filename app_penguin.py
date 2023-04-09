@@ -6,7 +6,6 @@ import pandas as pd
 import pickle
 from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestClassifier
-from stqdm import stqdm
 
 model = pickle.load(open('model.penguins.sav','rb'))
 species_encoder = pickle.load(open('encoder.species.sav','rb'))
